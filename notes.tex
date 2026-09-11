@@ -1,0 +1,208 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[colorlinks=true]{hyperref} % for cross-referencing, loads iftex for conditional statements
+
+\ifPDFTeX	%using pdflatex compiler
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\else % using XeLateX or LuaLaTeX compiler - modern compilers supporting new fonts
+\usepackage{fontspec}
+\fi
+
+\usepackage[left=2.54cm, right=2.54cm, top=2.54cm, bottom=2.54cm]{geometry}	% setting up page layout
+\usepackage{graphicx}	% package to include figures
+\usepackage{float} %pacakge to adjust figures/table positioning in doc
+\usepackage{amsthm, amssymb, amsmath}	% math related packages; amsthm - theorem like environments, symb - for math fonts, math for multiline equations, matrices
+
+\usepackage[dvipsnames, svgnames]{xcolor} % package to access different colors
+
+\usepackage{tabularray} % new pacakage for tables - more robust compared to default tables in latex
+\usepackage{mhchem} %for writing chemical eqns of formulas
+
+% package fpr adding citations (bibliography)
+\usepackage[style=numeric, 
+			sorting=none,
+			sortcites=true,
+			maxbibnames=20,
+			mincitenames=1,
+			maxcitenames=2
+			]{biblatex}
+% style = output style for intext citations
+% sorting - sorts the citation, default is name year title, but setting to none keep references in order in which they appear in text.
+% sortcites - useful for multiple citations inside singel cite command. sorts them in numeric order.
+% max/min citenames to control how many authors appear in text. with current options only main author name would appear in text e.g. J. Doe et al. 
+% maxbibnames control the number of authors that would appear in the bibliography (end of document)
+
+\usepackage{caption}	% customizing captions for float environments - not maintained anymore, but included here because of question regarding caption placement during last session.
+%\captionsetup{justification=raggedright,singlelinecheck=false} % uncomment it to globally set the captions to start from left of page. singlelinecheck=false ensures that small captions do no start at center of page.
+
+\usepackage{listings}	% for including source code in latex. 
+% Alternatively `minted` can be used for source code, but that requires python installation.
+\lstset{
+	keywordstyle=\color{red},
+	commentstyle=\color{DarkGreen},
+	stringstyle=\color{Purple},
+	basicstyle=\small\ttfamily,
+	backgroundcolor=\color{Gray!20},
+	breaklines,
+	numbers=left,
+	breakatwhitespace=false,
+}
+
+\usepackage{cleveref}	% for intelligent cross-referecning 
+
+\setlength{\parindent}{0pt}	%sets amount of indentation added to first line of paragraph
+
+\newcommand{\green}[1]{\textcolor{DarkGreen}{#1}}
+
+\crefname{lstlisting}{listing}{listings}
+\Crefname{lstlisting}{Listing}{Listings}
+
+\graphicspath{{Figures/}}
+
+\begin{document}
+	
+\section{Document structure}
+	
+	\LaTeX document can be divided into three main parts;
+
+	\begin{enumerate}
+		\item Document class
+		\item Preamble
+		\item Document body
+	\end{enumerate}
+	
+	\subsection{Document class}
+	
+	This is the first line of \LaTeX document, and defines the type (or class) of document. Some of the common classes include:
+	
+	\begin{itemize}
+		\item \texttt{article} $\rightarrow$ to write articles/short reports. Top level header is \lstinline|section| and from there it goes to \lstinline|subsection|, \lstinline|subsubsection| and so on.
+		\item \texttt{book} $\rightarrow$ for books. Supports \lstinline|part| and \lstinline|chapter| levels for writing. And if I recall correctly, has different margins for odd/even pages.
+		\item \texttt{beamer} $\rightarrow$ for creating presentations.
+	\end{itemize}
+
+	In addition to defining the type of document, the command \lstinline|\documentclass| also supports optional arguments. Some of the options are:
+	
+	\begin{itemize}
+		\item papersize $\rightarrow$ a4, a5, letter etc.
+		\item fontsize $\rightarrow$ font size are defined in terms of \emph{pt}. Default is 10pt.
+		\item orientation $\rightarrow$ landscape/portrait. Default is portrait.
+	\end{itemize}
+	
+	An example of document class is:
+	
+	\begin{lstlisting}[label={lst:class}, caption={Document class}]
+\documentclass[a4paper, 10pt]{article}
+	\end{lstlisting}
+	
+	\subsection{Preamble}
+	This section defines all the packages that are required for the document, settings that apply to whole document, user based commands (or macros) as well as document metadata. An example of preamble is presented in \Cref{lst:preamble}:
+	
+\begin{lstlisting}[label={lst:preamble}, caption={Definining document preamble}]
+% packages
+\usepackage[colorlinks=true]{hyperref} 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[left=2.54cm, right=2.54cm, top=2.54cm, bottom=2.54cm]{geometry}	
+
+% settings for document
+\setlength{\parindent}{0pt}
+
+% metadata
+\author{names}
+\title{text}
+\date{text}
+\end{lstlisting}
+	
+	\subsection{Document body}
+	This is the part where actual text (text that you want to put in document) goes. The contents are enclosed by \lstinline|\begin{document}| and \lstinline|\end{document}| commands. Inside document body, one can include different environments like figures, tables, equations and so on. 
+	
+	Some common typesetting tips:
+	
+	\begin{itemize}
+		\item \lstinline|\textbf{Bold text}| $\rightarrow$ \textbf{Bold text}
+		\item \lstinline|\textit{Italic text}| $\rightarrow$ \textit{Italic text}
+		\item \lstinline|\underline{Underline text}| $\rightarrow$ \underline{Underline text} 
+		\item \lstinline|A\textsubscript{subscript}| $\rightarrow$ A\textsubscript{subscript}
+		\item \lstinline|A\textsubscript{subscript}| $\rightarrow$ A\textsuperscript{superscript}
+		\item \lstinline|\textcolor{Blue}{blue text}|$\rightarrow$ \textcolor{Blue}{blue text}
+		\item \lstinline|\newline| or \lstinline|\\| $\rightarrow$ for line break.
+		\item \lstinline|\newpage| $\rightarrow$ forcing page break.
+	\end{itemize}                               
+
+\section{Equation}
+
+Writing equation in \LaTeX is very simple. Equations can be written in line using \$ operator, or they can be written inside math environment. See \cref{lst:equations} for example
+
+\begin{lstlisting}[caption={Writing equations in \LaTeX}, label={lst:equations}]
+Equations can be written inline e.g. Relativity states $E=mc^{2}$
+
+Equation can also be written in display mode using the \texttt{equation} environment:
+\begin{equation}
+	E = mc^{2}
+\end{equation}
+\end{lstlisting}
+
+Equations can be written inline e.g. Relativity states $E=mc^{2}$
+
+Equation can also be written in display mode using the \texttt{equation} environment:
+\begin{equation}
+	E = mc^{2}
+\end{equation}
+
+\LaTeX also supports writing subequations (\cref{lst:subequations}). Writing greek/latin characters is also quite intuitive, normally the character is preceded by a backslash (\textbackslash) e.g. \lstinline|$\rho$| $\rightarrow$ $\rho$. Note that for writing Greek/Latin characters within text requires the same syntax as inline equations, i.e. enclosing it between \$ operator. Few more things to note in \cref{lst:subequations};
+\begin{itemize}
+	\item the command \lstinline|label{key}| is used to create an anchor for cross-referencing the object at some other point in document.
+	\item Math (or equation environment) normally writes everything in \emph{italics}. \lstinline|$\mathrm{}$| formats the math symbols to normal (roman) font. 
+	\item Spacing is ignored in math mode. To add space between characters or operators use \textbackslash followed by space.
+	\item Simple operators like addition and subtraction can be written as keyboard characters (+ or -). For multiplication use \lstinline|\times or \cdot| $\rightarrow$ $\times$ or $\cdot$ respectively. For division, use \lstinline|$\frac{num}{den}$| $\rightarrow$ $\frac{num}{den}$
+\end{itemize} 
+
+\begin{lstlisting}[caption={Writing subequations, fractions, greek/latin characters}, label={lst:subequations}]
+\begin{subequations}
+\begin{gather}
+\mathrm{uc_{f}|_{z = 0} = uc_f|_{z = 0^+} - D_{ax}\frac{\partial c_f}{\partial z}\Bigg|_{z = 0^+}} \label{eq:BC-inlet} \\
+\mathrm{\frac{\partial c_f(z = L, t)}{\partial z} = 0} \label{eq:BC-outlet} 
+\end{gather}
+\label{eq:BoundaryConditions}
+\end{subequations}
+\end{lstlisting}
+
+\begin{subequations}
+	\begin{gather}
+		\mathrm{uc_{f}|_{z = 0} = uc_f|_{z = 0^+} - D_{ax}\frac{\partial c_f}{\partial z}\Bigg|_{z = 0^+}} \label{eq:BC-inlet} \\
+		\mathrm{\frac{\partial c_f(z = L, t)}{\partial z} = 0} \label{eq:BC-outlet} 
+	\end{gather}
+	\label{eq:BoundaryConditions}
+\end{subequations}
+
+\section{Figures}
+
+Figures in \LaTeX{} are included using \texttt{figure} environment. The supported types are \texttt{.pdf, .eps, .png, .jpeg}. General syntax for including figures is given in \cref{lst:figures}. Important to include packages \texttt{graphicx} and \texttt{float} in document preamble. The latter is required for changing figure position.
+
+\begin{lstlisting}[caption={Including figures in \LaTeXe}, label={lst:figures}]
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{learning_curve.png}
+\caption[Comparison between different tools for writing text]{Comparison between different tools for writing text. \LaTeX{} is a bit difficult to start with, but becomes easier to write with time. Markdown is also a nice way of writing documents. See \href{https://quarto.org/docs/authoring/markdown-basics.html}{Quarto} for a good markdown option.}
+\label{fig:demo_figure}
+\end{figure}
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{learning_curve.png}
+	\caption[Comparison between different tools for writing text]{Comparison between different tools for writing text. \LaTeX{} is a bit difficult to start with, but becomes easier to write with time. Markdown is also a nice way of writing documents. See \href{https://quarto.org/docs/authoring/markdown-basics.html}{Quarto} for a good markdown option.}
+	\label{fig:demo_figure}
+\end{figure}
+
+Some notes for \cref{lst:figures}; 
+\begin{itemize}
+	\item \lstinline|[H]| right after figure environment tells the compiler to place figure precisely at that point. Other options include \texttt{t}; page top, \texttt{b}; page bottom, \texttt{h}; approximately here.
+	\item \lstinline|\centering| is used to instruct the compile to horizontally center figure.
+	\item \lstinline|\includegraphics| is the command that actually includes the figure. The argument in \lstinline|[]| are optional. There are several options including some for trimming the figure, but normally I only use sizing (width) argument. In my experience, cropping the figure or removing white spaces in figures is more easy using external tools i.e. adobe or inkscape.
+	
+\end{itemize}
+
+\end{document}
